@@ -16,25 +16,25 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
-    public Optional<Patient> findById(Long entityId) {
+    public Optional<Patient> findPatient(Integer entityId) {
         return patientRepository.findById(entityId);
     }
 
-    public List<Patient> findAll() {
+    public List<Patient> listPatients() {
         return StreamSupport.stream(
                 patientRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
-    public Patient create(Patient patient) {
+    public Patient addPatient(Patient patient) {
         return patientRepository.save(patient);
     }
 
-    public Patient update(Patient patient) {
-        return create(patient);
+    public Patient changePatient(Patient patient) {
+        return addPatient(patient);
     }
 
-    public void delete(Patient patient) {
+    public void removePatient(Patient patient) {
         patientRepository.delete(patient);
     }
 }
