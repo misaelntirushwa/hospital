@@ -19,6 +19,7 @@ public class Patient {
     private String phone;
     private Integer insuranceId;
 
+    @ManyToOne
     @JoinColumn(name = "physician_id")
     private Physician physician;
 }
