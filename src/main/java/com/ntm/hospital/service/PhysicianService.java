@@ -1,6 +1,7 @@
 package com.ntm.hospital.service;
 
 import com.ntm.hospital.data.Physician;
+import com.ntm.hospital.exception.PhysicianNotFoundException;
 import com.ntm.hospital.repository.PhysicianRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,25 +19,32 @@ public class PhysicianService {
         this.physicianRepository = physicianRepository;
     }
 
-    public Optional<Physician> findById(Long entityId) {
-        return physicianRepository.findById(entityId);
+    public Physician findPhysician(Integer entityId) {
+
+        Optional<Physician> optionalPhysician = physicianRepository.findById(entityId);
+
+        if (optionalPhysician.isPresent()) {
+            return optionalPhysician.get();
+        } else {
+            throw new PhysicianNotFoundException("Physician Not Found");
+        }
     }
 
-    public List<Physician> findAll() {
+    public List<Physician> listPhysicians() {
         return StreamSupport.stream(
                 physicianRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
-    public Physician create(Physician physician) {
+    public Physician addPhysician(Physician physician) {
         return physicianRepository.save(physician);
     }
 
-    public Physician update(Physician physician) {
-        return create(physician);
+    public Physician changePhysician(Physician physician) {
+        return addPhysician(physician);
     }
 
-    public void delete(Physician physician) {
+    public void removePhysician(Physician physician) {
         physicianRepository.delete(physician);
     }
 }
