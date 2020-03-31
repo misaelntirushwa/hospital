@@ -1,11 +1,13 @@
 package com.ntm.hospital.data;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@AllArgsConstructor
 public class Physician {
 
     @Id
