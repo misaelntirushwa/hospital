@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,9 +42,22 @@ public class PhysicianController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Physician> addPhysician(@RequestBody Physician physician) {
+    public ResponseEntity<Physician> addPhysician(@Valid @RequestBody Physician physician) {
         Physician addedPhysician = physicianService.addPhysician(physician);
 
         return new ResponseEntity<Physician>(addedPhysician, HttpStatus.CREATED);
     }
+
+    @PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Physician> changePhysician(@PathVariable("id") Integer entityId,
+                                                     @Valid @RequestBody Physician physician) {
+        try {
+            Physician changedPhysician = physicianService.changePhysician(entityId, physician);
+
+            return new ResponseEntity<Physician>(changedPhysician, HttpStatus.OK);
+        } catch (PhysicianNotFoundException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Physician Not Found");
+        }
+    }
+
 }
