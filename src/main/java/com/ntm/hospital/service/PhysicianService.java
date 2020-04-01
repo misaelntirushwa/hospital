@@ -40,8 +40,18 @@ public class PhysicianService {
         return physicianRepository.save(physician);
     }
 
-    public Physician changePhysician(Physician physician) {
-        return addPhysician(physician);
+    public Physician changePhysician(Integer entityId, Physician physician) {
+        Optional<Physician> optionalPhysician = physicianRepository.findById(entityId);
+
+        if (optionalPhysician.isPresent()) {
+            Physician physicianToChange = optionalPhysician.get();
+            physicianToChange.setName(physician.getName());
+            physicianToChange.setPosition(physician.getPosition());
+            physicianToChange.setSsn(physician.getSsn());
+            return physicianRepository.save(physicianToChange);
+        } else {
+            throw new PhysicianNotFoundException("Physician Not Found");
+        }
     }
 
     public void removePhysician(Physician physician) {
